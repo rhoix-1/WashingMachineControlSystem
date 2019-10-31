@@ -14,8 +14,8 @@ def Now():
 # GPIO DATE COLLECTING ---------------------------------------------------------
 
 def SelectedPreset():
-	SPreset = ["Regular", "Whites", "Colors", "Permanent_Press", "Delicates", "Custom"]
-	return SPreset[random.randint(0, 5)]
+	SPreset = ["Shirt (Color)", "Shirt (White)", "Pants", "Socks", "Underwear", "Towels", "Custom"]
+	return SPreset[random.randint(0, 6)]
 
 def AgitationSpeed():
 	ASpeed = ["Fast", "Slow"]
@@ -104,13 +104,9 @@ def SendData():
 
 	# sql commands
 	# val passes data in %s, %s
-	sql = "INSERT INTO logs (SelectedPreset, AgitationSpeed, CycleSpeed, WaterTemperature, Soak, ItemOfClothing, AgitationWaterLevel, AgitationWaterSalvaged, Lights, Valves, Motors, HumiditySensors, TemperatureSensors, PressureSensors, DateTime) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-	logSPreset = SelectedPreset()
-	logASpeed = AgitationSpeed()
-	logCSpeed = CycleSpeed()
-	logTemp = WaterTemperature()
-	logSoak = Soak()
-	logItem = ItemOfClothing()
+	
+	# --- LOGS ---
+	sql = "INSERT INTO logs (DateTime, AgitationWaterLevel, AgitationWaterSalvaged, Lights, Valves, Motors, HumiditySensors, TemperatureSensors, PressureSensors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 	logAWaterLevel = AgitationWaterLevel()
 	logAWaterSalvaged = AgitationWaterSalvaged()
 	logLights = Lights()
@@ -119,7 +115,20 @@ def SendData():
 	logHSensors = HumiditySensors()
 	logTSensors = TemperatureSensors()
 	logPSensors = PressureSensors()
-	val = (logSPreset, logASpeed, logCSpeed, logTemp, logSoak, logItem, logAWaterLevel, logAWaterSalvaged, logLights, logValves, logMotors, logHSensors, logTSensors, logPSensors, Now())
+	val = (Now(), logAWaterLevel, logAWaterSalvaged, logLights, logValves, logMotors, logHSensors, logTSensors, logPSensors)
+	print(sql, val)
+	mycursor.execute(sql, val)
+
+	mydb.commit()
+	
+	# --- SETINGS ---
+	sql = "INSERT INTO settings (DateTime, SelectedPreset, AgitationSpeed, CycleSpeed, WaterTemperature, Soak) VALUES (%s, %s, %s, %s, %s, %s)"
+	setSPreset = SelectedPreset()
+	setASpeed = AgitationSpeed()
+	setCSpeed = CycleSpeed()
+	setTemp = WaterTemperature()
+	setSoak = Soak()
+	val = (Now(), setSPreset, setASpeed, setCSpeed, setTemp, setSoak)
 	print(sql, val)
 	mycursor.execute(sql, val)
 
