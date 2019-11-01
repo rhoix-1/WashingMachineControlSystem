@@ -11,7 +11,7 @@ ScreenManager:
         Label:
             text: "Presets"
         Label:
-            text: "0"
+            text: ""
         Label:
             text: "Intake"
         
@@ -23,18 +23,18 @@ ScreenManager:
                 id: presetsID
                 text: "Press"
                 on_release: 
-                    root.userinputSelections(presetsID, "dataCollector.SPreset")
+                    # root.userinputSelections(presetsID, "dataCollector.SPreset")
             Label:
                 text: "options"
         Label:
-            text: "0"
+            text: ""
         Label:
-            text: "0"
+            text: ""
 
         Label:
             text: "Agitation Speed"
         Label:
-            text: "0"
+            text: ""
         Label:
             text: "Agitation"
 
@@ -42,19 +42,22 @@ ScreenManager:
             cols: 3
             Label:
                 text: "options"
-            Label:
-                text: "options"
+            Button:
+                id: agitationSpeedID
+                text: "Press"
+                on_release: 
+                    # root.userinputSelections(presetsID, "dataCollector.SPreset")
             Label:
                 text: "options"
         Label:
-            text: "0"
+            text: ""
         Label:
-            text: "0"
+            text: ""
 
         Label:
             text: "Cycle Speed"
         Label:
-            text: "0"
+            text: ""
         Label:
             text: "Draining"
 
@@ -62,19 +65,22 @@ ScreenManager:
             cols: 3
             Label:
                 text: "options"
-            Label:
-                text: "options"
+            Button:
+                id: drainingID
+                text: "Press"
+                on_release: 
+                    # root.userinputSelections(presetsID, "dataCollector.SPreset")
             Label:
                 text: "options"
         Label:
-            text: "0"
+            text: ""
         Label:
-            text: "0"
+            text: ""
         
         Label:
             text: "Water Temp."
         Label:
-            text: "0"
+            text: ""
         Label:
             text: "UV Light"
 
@@ -82,19 +88,22 @@ ScreenManager:
             cols: 3
             Label:
                 text: "options"
-            Label:
-                text: "options"
+            Button:
+                id: waterTempID
+                text: "Press"
+                on_release: 
+                    # root.userinputSelections(presetsID, "dataCollector.SPreset")
             Label:
                 text: "options"
         Label:
-            text: "0"
+            text: ""
         Label:
-            text: "0"
+            text: ""
 
         Label:
             text: "Include Soak"
         Label:
-            text: "0"
+            text: ""
         Label:
             text: "Dispense"
 
@@ -102,20 +111,25 @@ ScreenManager:
             cols: 3
             Label:
                 text: "options"
-            Label:
-                text: "options"
+            Button:
+                id: includeSoakID
+                text: "Press"
+                on_release: 
+                    # root.userinputSelections(presetsID, "dataCollector.SPreset")
             Label:
                 text: "options"
         Label:
-            text: "0"
+            text: ""
         Label:
-            text: "0"
+            text: ""
         
-        Label:
+        Button:
+            id: doneButtonID
             text: "Done"
         Label:
             text: "time and date"
         Button:
+            id: settingsButtonID
             text: "Settings"
             on_release: 
                 app.root.current = "settings"

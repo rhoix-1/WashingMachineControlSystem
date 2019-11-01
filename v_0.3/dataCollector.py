@@ -12,29 +12,32 @@ def Now():
 
 
 # GPIO DATE COLLECTING ---------------------------------------------------------
+SPreset = ["Shirt (Color)", "Shirt (White)", "Pants", "Socks", "Underwear", "Towels", "Custom"]
+ASpeed = ["Fast", "Slow"]
+CSpeed = ["Fast", "Slow"]
+Temp = ["Warm", "Hot", "Cold"]
+Soak = ["No", "Yes"]
+Item = ["Shirt", "Pants", "Underware", "Socks", "MiscSmall", "MiscMedium", "MiscLarge"]
+LightToggle = ["Off", "On"]
+MotorToggle = ["Off", "On"]
+ValveToggle = ["Closed", "Open"]
 
 def SelectedPreset():
-	SPreset = ["Shirt (Color)", "Shirt (White)", "Pants", "Socks", "Underwear", "Towels", "Custom"]
 	return SPreset[random.randint(0, 6)]
 
 def AgitationSpeed():
-	ASpeed = ["Fast", "Slow"]
 	return ASpeed[random.randint(0, 1)]
 
 def CycleSpeed():
-	CSpeed = ["Fast", "Slow"]
 	return CSpeed[random.randint(0, 1)]
 
 def WaterTemperature():
-	Temp = ["Warm", "Hot", "Cold"]
 	return Temp[random.randint(0, 2)]
 
 def Soak():
-	Soak = ["No", "Yes"]
 	return Soak[random.randint(0, 1)]
 
 def ItemOfClothing():
-	Item = ["Shirt", "Pants", "Underware", "Socks", "MiscSmall", "MiscMedium", "MiscLarge"]
 	return Item[random.randint(0, 6)]
 
 def AgitationWaterLevel():
@@ -46,21 +49,18 @@ def AgitationWaterSalvaged():
 	return str(AWaterSalvaged) + "ml"
 
 def Lights():
-	LightToggle = ["Off", "On"]
 	L1 = LightToggle[random.randint(0,1)]
 	L2 = LightToggle[random.randint(0,1)]
 	L3 = LightToggle[random.randint(0,1)]
 	return "L1: " + L1 + ", L2: " + L2 + ", L3: " + L3
 
 def Motors():
-	MotorToggle = ["Off", "On"]
 	M1 = MotorToggle[random.randint(0,1)]
 	M2 = MotorToggle[random.randint(0,1)]
 	M3 = MotorToggle[random.randint(0,1)]
 	return "M1: " + M1 + ", M2: " + M2 + ", M3: " + M3
 
 def Valves():
-	ValveToggle = ["Closed", "Open"]
 	V1 = ValveToggle[random.randint(0,1)]
 	V2 = ValveToggle[random.randint(0,1)]
 	V3 = ValveToggle[random.randint(0,1)]
