@@ -1,0 +1,171 @@
+# Platt Tech Nasa Hunch Team (Ethan Feldman & Josepher Shunaula)
+ScreenManager:
+    HomeWindow:
+    SettingsWindow:
+
+<HomeWindow>:
+    name: "home"
+
+    GridLayout:
+        cols: 3
+
+        Label:
+            text: "Presets"
+        Label:
+            text: ""
+        Label:
+            text: "Intake"
+        
+        GridLayout:
+            cols: 3
+            Label:
+                text: ""
+            Button:
+                id: presetsID
+                text: "Press"
+                on_release:
+                    root.userInputSelections(presetsID, "dataCollector.SPreset")
+            Label:
+                text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+
+        Label:
+            text: "Agitation Speed"
+        Label:
+            text: ""
+        Label:
+            text: "Agitation"
+
+        GridLayout:
+            cols: 3
+            Label:
+                text: ""
+            Button:
+                id: agitationSpeedID
+                text: "Press"
+                on_release:
+                    root.userInputSelections(agitationSpeedID, "dataCollector.ASpeed")
+            Label:
+                text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+
+        Label:
+            text: "Cycle Speed"
+        Label:
+            text: ""
+        Label:
+            text: "Draining"
+
+        GridLayout:
+            cols: 3
+            Label:
+                text: ""
+            Button:
+                id: cycleSpeedID
+                text: "Press"
+                on_release: 
+                    root.userInputSelections(cycleSpeedID, "dataCollector.CSpeed")
+            Label:
+                text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        
+        Label:
+            text: "Water Temp."
+        Label:
+            text: ""
+        Label:
+            text: "UV Light"
+
+        GridLayout:
+            cols: 3
+            Label:
+                text: ""
+            Button:
+                id: waterTempID
+                text: "Press"
+                on_release: 
+                    root.userInputSelections(waterTempID, "dataCollector.Temp")
+            Label:
+                text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+
+        Label:
+            text: "Soak"
+        Label:
+            text: ""
+        Label:
+            text: "Dispense"
+
+        GridLayout:
+            cols: 3
+            Label:
+                text: ""
+            Button:
+                id: soakID
+                text: "Press"
+                on_release: 
+                    root.userInputSelections(soakID, "dataCollector.soakItem")
+            Label:
+                text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        
+        Button:
+            id: doneButtonID
+            text: "Done"
+        Label:
+            id: dateTimeID
+            text: "time and date"
+        Button:
+            id: settingsButtonID
+            text: "Settings"
+            on_release: 
+                app.root.current = "settings"
+                root.manager.transition.direction = "left"
+
+<SettingsWindow>:
+    name: "settings"
+
+    GridLayout:
+        cols: 3
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: "You are in the Settings Page"
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Button:
+            text: "Go Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
