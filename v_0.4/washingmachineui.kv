@@ -11,131 +11,130 @@ ScreenManager:
 
         Label:
             text: "Presets"
+            # font_size: (self.x + self.y) // 35
         Label:
-            text: ""
         Label:
             text: "Intake"
         
         GridLayout:
             cols: 3
             Label:
-                text: ""
             Button:
                 id: presetsID
                 text: "Press"
+                # font_size: (self.x + self.y) // 35
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release:
                     root.userInputSelections(presetsID, "dataCollector.SPreset")
             Label:
-                text: ""
         Label:
-            text: ""
         Label:
-            text: ""
 
         Label:
             text: "Agitation Speed"
         Label:
-            text: ""
         Label:
             text: "Agitation"
 
         GridLayout:
             cols: 3
             Label:
-                text: ""
             Button:
                 id: agitationSpeedID
                 text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release:
                     root.userInputSelections(agitationSpeedID, "dataCollector.ASpeed")
             Label:
-                text: ""
         Label:
-            text: ""
         Label:
-            text: ""
 
         Label:
             text: "Cycle Speed"
         Label:
-            text: ""
         Label:
             text: "Draining"
 
         GridLayout:
             cols: 3
             Label:
-                text: ""
             Button:
                 id: cycleSpeedID
                 text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release: 
                     root.userInputSelections(cycleSpeedID, "dataCollector.CSpeed")
             Label:
-                text: ""
         Label:
-            text: ""
         Label:
-            text: ""
         
         Label:
             text: "Water Temp."
         Label:
-            text: ""
         Label:
             text: "UV Light"
 
         GridLayout:
             cols: 3
             Label:
-                text: ""
             Button:
                 id: waterTempID
                 text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release: 
                     root.userInputSelections(waterTempID, "dataCollector.Temp")
             Label:
-                text: ""
         Label:
-            text: ""
         Label:
-            text: ""
 
         Label:
             text: "Soak"
         Label:
-            text: ""
         Label:
             text: "Dispense"
 
         GridLayout:
             cols: 3
             Label:
-                text: ""
             Button:
                 id: soakID
                 text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release: 
                     root.userInputSelections(soakID, "dataCollector.soakItem")
             Label:
-                text: ""
         Label:
-            text: ""
         Label:
-            text: ""
         
-        Button:
-            id: doneButtonID
-            text: "Done"
+        Label:
+        Label:
+        Label:
+        
+        GridLayout:
+            cols: 3
+            Button:
+                id: doneButtonID
+                text: "Done"
+            Label:
+            Label:
         Label:
             id: dateTimeID
             text: "time and date"
-        Button:
-            id: settingsButtonID
-            text: "Settings"
-            on_release: 
-                app.root.current = "settings"
-                root.manager.transition.direction = "left"
+        GridLayout:
+            cols: 3
+            Label:
+            Label:
+            Button:
+                id: settingsButtonID
+                text: "Settings"
+                on_release: 
+                    app.root.current = "settings"
+                    root.manager.transition.direction = "left"
 
 <SettingsWindow>:
     name: "settings"
