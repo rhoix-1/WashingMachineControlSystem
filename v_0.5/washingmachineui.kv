@@ -1,0 +1,189 @@
+# Platt Tech Nasa Hunch Team (Ethan Feldman & Josepher Shunaula)
+ScreenManager:
+    HomeWindow:
+    SettingsWindow:
+
+<HomeWindow>:
+    name: "home"
+
+    GridLayout:
+        rows: 13
+
+
+        Label:
+            text: "Presets"
+            # font_size: (self.x + self.y) // 35
+        Label:
+        Label:
+            text: "Intake"
+        
+
+        GridLayout:
+            cols: 3
+            Label:
+            Button:
+                id: presetsID
+                text: "Press"
+                # font_size: (self.x + self.y) // 35
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
+                on_release:
+                    root.userInputSelections(presetsID, "dataCollector.SPreset")
+            Label:
+        Label:
+        Label:
+
+
+        Label:
+            text: "Agitation Speed"
+        Label:
+        Label:
+            text: "Agitation"
+
+
+        GridLayout:
+            cols: 3
+            Label:
+            Button:
+                id: agitationSpeedID
+                text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
+                on_release:
+                    root.userInputSelections(agitationSpeedID, "dataCollector.ASpeed")
+            Label:
+        Label:
+        Label:
+
+
+        Label:
+            text: "Cycle Speed"
+        Label:
+        Label:
+            text: "Draining"
+
+
+        GridLayout:
+            cols: 3
+            Label:
+            Button:
+                id: cycleSpeedID
+                text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
+                on_release: 
+                    root.userInputSelections(cycleSpeedID, "dataCollector.CSpeed")
+            Label:
+        Label:
+        Label:
+
+
+        Label:
+            text: "Water Temp."
+        Label:
+        Label:
+            text: "UV Light"
+
+
+        GridLayout:
+            cols: 3
+            Label:
+            Button:
+                id: waterTempID
+                text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
+                on_release: 
+                    root.userInputSelections(waterTempID, "dataCollector.Temp")
+            Label:
+        Label:
+        Label:
+
+
+        Label:
+            text: "Soak"
+        Label:
+        Label:
+            text: "Dispense"
+
+
+        GridLayout:
+            cols: 3
+            Label:
+            Button:
+                id: soakID
+                text: "Press"
+                color: (0.0, 0.0, 0.0, 1.0)
+                background_color: (255.0, 255.0, 255.0, 1.0)
+                on_release: 
+                    root.userInputSelections(soakID, "dataCollector.soakItem")
+            Label:
+        Label:
+        Label:
+        
+
+        Label:
+        Label:
+            id: dateTimeID
+            text: "Time and Date"
+        Label:
+        
+        GridLayout:
+            cols: 2
+            Button:
+                id: startButtonID
+                text: "Start"
+            Button:
+                id: pauseButtonID
+                text: "Pause"
+
+        GridLayout:
+            cols: 2
+            Button:
+                id: reverseButtonID
+                text: "Reverse"
+            Button:
+                id: shutdownButtonID
+                text: "Shutdown"
+        GridLayout:
+            cols: 2
+            Label:
+            Button:
+                id: settingsButtonID
+                text: "Settings"
+                on_release: 
+                    app.root.current = "settings"
+                    root.manager.transition.direction = "left"
+
+<SettingsWindow>:
+    name: "settings"
+
+    GridLayout:
+        cols: 3
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: "You are in the Settings Page"
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Button:
+            text: "Go Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
+        Label:
+            text: ""
