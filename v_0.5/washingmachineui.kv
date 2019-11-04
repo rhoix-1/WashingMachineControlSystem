@@ -12,10 +12,11 @@ ScreenManager:
 
         Label:
             text: "Presets"
-            # font_size: (self.x + self.y) // 35
+            font_size: 35
         Label:
         Label:
             text: "Intake"
+            font_size: 35
         
 
         GridLayout:
@@ -24,6 +25,7 @@ ScreenManager:
             Button:
                 id: presetsID
                 text: "Press"
+                font_size: 18
                 # font_size: (self.x + self.y) // 35
                 color: (0.0, 0.0, 0.0, 1.0)
                 background_color: (255.0, 255.0, 255.0, 1.0)
@@ -36,9 +38,11 @@ ScreenManager:
 
         Label:
             text: "Agitation Speed"
+            font_size: 35
         Label:
         Label:
             text: "Agitation"
+            font_size: 35
 
 
         GridLayout:
@@ -47,6 +51,7 @@ ScreenManager:
             Button:
                 id: agitationSpeedID
                 text: "Press"
+                font_size: 18
                 color: (0.0, 0.0, 0.0, 1.0)
                 background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release:
@@ -58,9 +63,11 @@ ScreenManager:
 
         Label:
             text: "Cycle Speed"
+            font_size: 35
         Label:
         Label:
             text: "Draining"
+            font_size: 35
 
 
         GridLayout:
@@ -69,6 +76,7 @@ ScreenManager:
             Button:
                 id: cycleSpeedID
                 text: "Press"
+                font_size: 18
                 color: (0.0, 0.0, 0.0, 1.0)
                 background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release: 
@@ -79,44 +87,40 @@ ScreenManager:
 
 
         Label:
-            text: "Water Temp."
+            text: "Soak"
+            font_size: 35
         Label:
         Label:
             text: "UV Light"
+            font_size: 35
 
 
         GridLayout:
             cols: 3
             Label:
             Button:
-                id: waterTempID
+                id: soakItemID
                 text: "Press"
+                font_size: 18
                 color: (0.0, 0.0, 0.0, 1.0)
                 background_color: (255.0, 255.0, 255.0, 1.0)
                 on_release: 
-                    root.userInputSelections(waterTempID, "dataCollector.Temp")
+                    root.userInputSelections(soakItemID, "dataCollector.soakItem")
             Label:
         Label:
         Label:
 
 
         Label:
-            text: "Soak"
         Label:
         Label:
             text: "Dispense"
+            font_size: 35
 
 
         GridLayout:
             cols: 3
             Label:
-            Button:
-                id: soakID
-                text: "Press"
-                color: (0.0, 0.0, 0.0, 1.0)
-                background_color: (255.0, 255.0, 255.0, 1.0)
-                on_release: 
-                    root.userInputSelections(soakID, "dataCollector.soakItem")
             Label:
         Label:
         Label:
@@ -126,6 +130,7 @@ ScreenManager:
         Label:
             id: dateTimeID
             text: "Time and Date"
+            font_size: 25
         Label:
         
         GridLayout:
@@ -133,24 +138,29 @@ ScreenManager:
             Button:
                 id: startButtonID
                 text: "Start"
+                font_size: 25
             Button:
                 id: pauseButtonID
                 text: "Pause"
+                font_size: 25
 
         GridLayout:
             cols: 2
             Button:
                 id: reverseButtonID
                 text: "Reverse"
+                font_size: 25
             Button:
                 id: shutdownButtonID
                 text: "Shutdown"
+                font_size: 25
         GridLayout:
             cols: 2
             Label:
             Button:
                 id: settingsButtonID
                 text: "Settings"
+                font_size: 25
                 on_release: 
                     app.root.current = "settings"
                     root.manager.transition.direction = "left"
@@ -170,12 +180,14 @@ ScreenManager:
             text: ""
         Label:
             text: "You are in the Settings Page"
+            font_size: 40
         Label:
             text: ""
         Label:
             text: ""
         Button:
             text: "Go Back"
+            font_size: 40
             on_release:
                 app.root.current = "home"
                 root.manager.transition.direction = "right"

@@ -12,10 +12,9 @@ def Now():
 
 
 # GPIO DATE COLLECTING ---------------------------------------------------------
-SPreset = ["Shirt (Color)", "Shirt (White)", "Pants", "Socks", "Underwear", "Towels", "Custom"]
+SPreset = ["Color", "White", "Pants", "Socks", "Underwear", "Towels", "Custom"]
 ASpeed = ["Fast", "Slow"]
 CSpeed = ["Fast", "Slow"]
-Temp = ["Warm", "Hot", "Cold"]
 soakItem = ["No", "Yes"]
 # ------------------------------------------------------------------------------
 Item = ["Shirt", "Pants", "Underware", "Socks", "MiscSmall", "MiscMedium", "MiscLarge"]
@@ -32,11 +31,8 @@ def AgitationSpeed():
 def CycleSpeed():
 	return CSpeed[random.randint(0, 1)]
 
-def WaterTemperature():
-	return Temp[random.randint(0, 2)]
-
 def Soak():
-	return Soak[random.randint(0, 1)]
+	return soakItem[random.randint(0, 1)]
 
 def ItemOfClothing():
 	return Item[random.randint(0, 6)]
@@ -123,13 +119,12 @@ def SendData():
 	mydb.commit()
 	
 	# --- SETINGS ---
-	sql = "INSERT INTO settings (DateTime, SelectedPreset, AgitationSpeed, CycleSpeed, WaterTemperature, Soak) VALUES (%s, %s, %s, %s, %s, %s)"
+	sql = "INSERT INTO settings (DateTime, SelectedPreset, AgitationSpeed, CycleSpeed, Soak) VALUES (%s, %s, %s, %s, %s)"
 	setSPreset = SelectedPreset()
 	setASpeed = AgitationSpeed()
 	setCSpeed = CycleSpeed()
-	setTemp = WaterTemperature()
 	setSoak = Soak()
-	val = (Now(), setSPreset, setASpeed, setCSpeed, setTemp, setSoak)
+	val = (Now(), setSPreset, setASpeed, setCSpeed, setSoak)
 	print(sql, val)
 	mycursor.execute(sql, val)
 
