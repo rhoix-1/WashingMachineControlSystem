@@ -12,7 +12,7 @@ def Now():
 
 
 # GPIO DATE COLLECTING ---------------------------------------------------------
-SPreset = ["Shirt (Color)", "Shirt (White)", "Pants", "Socks", "Underwear", "Towels", "Custom"]
+SPreset = ["Color", "White", "Pants", "Socks", "Underwear", "Towels", "Custom"]
 ASpeed = ["Fast", "Slow"]
 CSpeed = ["Fast", "Slow"]
 Temp = ["Warm", "Hot", "Cold"]
