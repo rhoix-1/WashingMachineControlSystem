@@ -36,7 +36,7 @@ def WaterTemperature():
 	return Temp[random.randint(0, 2)]
 
 def Soak():
-	return Soak[random.randint(0, 1)]
+	return soakItem[random.randint(0, 1)]
 
 def ItemOfClothing():
 	return Item[random.randint(0, 6)]
