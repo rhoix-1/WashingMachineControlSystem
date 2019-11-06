@@ -1,0 +1,213 @@
+# Platt Tech Nasa Hunch Team (Ethan Feldman & Josepher Shunaula)
+ScreenManager:
+	HomeWindow:
+	SettingsWindow:
+
+<HomeWindow>:
+	name: "home"
+
+	GridLayout:
+		rows: 13
+
+
+		Label:
+			text: "Item"
+			font_size: 35
+		Label:
+		Label:
+			text: "Intake"
+			font_size: 35
+
+
+		GridLayout:
+			cols: 3
+			Label:
+			Button:
+				id: clothingID
+				text: "Press"
+				font_size: 18
+				# font_size: (self.x + self.y) // 35
+				color: (0.0, 0.0, 0.0, 1.0)
+				background_color: (255.0, 255.0, 255.0, 1.0)
+				on_release:
+					root.userInputSelections(clothingID, "itemOfClothing", "clothingID")
+			Label:
+		Label:
+		Label:
+
+
+		Label:
+			text: "Agitation Speed"
+			font_size: 35
+		Label:
+		Label:
+			text: "Agitation"
+			font_size: 35
+
+
+		GridLayout:
+			cols: 3
+			Label:
+			Button:
+				id: agitationSpeedID
+				text: "Press"
+				font_size: 18
+				color: (0.0, 0.0, 0.0, 1.0)
+				background_color: (255.0, 255.0, 255.0, 1.0)
+				on_release:
+					root.userInputSelections(agitationSpeedID, "aSpeed", "agitationSpeedID")
+			Label:
+		Label:
+		Label:
+
+
+		Label:
+			text: "Cycle Speed"
+			font_size: 35
+		Label:
+		Label:
+			text: "Draining"
+			font_size: 35
+
+
+		GridLayout:
+			cols: 3
+			Label:
+			Button:
+				id: cycleSpeedID
+				text: "Press"
+				font_size: 18
+				color: (0.0, 0.0, 0.0, 1.0)
+				background_color: (255.0, 255.0, 255.0, 1.0)
+				on_release:
+					root.userInputSelections(cycleSpeedID, "cSpeed", "cycleSpeedID")
+			Label:
+		Label:
+		Label:
+
+
+		Label:
+			text: "Soak"
+			font_size: 35
+		Label:
+		Label:
+			text: "UV Light"
+			font_size: 35
+
+
+		GridLayout:
+			cols: 3
+			Label:
+			Button:
+				id: soakItemID
+				text: "Press"
+				font_size: 18
+				color: (0.0, 0.0, 0.0, 1.0)
+				background_color: (255.0, 255.0, 255.0, 1.0)
+				on_release:
+					root.userInputSelections(soakItemID, "soakItem", "soakItemID")
+			Label:
+		Label:
+		Label:
+
+#
+		Label:
+			text: "Item Size"
+			font_size: 35
+		Label:
+		Label:
+			text: "Dispense"
+			font_size: 35
+
+
+		GridLayout:
+			cols: 3
+			Label:
+			Button:
+				id: waterAmountID
+				text: "Press"
+				font_size: 18
+				color: (0.0, 0.0, 0.0, 1.0)
+				background_color: (255.0, 255.0, 255.0, 1.0)
+				on_release:
+					root.userInputSelections(waterAmountID, "waterAmount", "waterAmountID")
+			Label:
+		Label:
+		Label:
+
+
+		Label:
+		Label:
+			id: dateTimeID
+			text: "hi" # root.SetDateTime()
+			font_size: 25
+		Label:
+
+		GridLayout:
+			cols: 2
+			Button:
+				id: startButtonID
+				text: "Start"
+				font_size: 25
+				on_release:
+					root.doneButton(clothingID, agitationSpeedID, cycleSpeedID, soakItemID, waterAmountID)
+			Button:
+				id: pauseButtonID
+				text: "Pause"
+				font_size: 25
+
+		GridLayout:
+			cols: 2
+			Button:
+				id: reverseButtonID
+				text: "Reverse"
+				font_size: 25
+			Button:
+				id: shutdownButtonID
+				text: "Shutdown"
+				font_size: 25
+		GridLayout:
+			cols: 2
+			Label:
+			Button:
+				id: settingsButtonID
+				text: "Settings"
+				font_size: 25
+				on_release:
+					app.root.current = "settings"
+					root.manager.transition.direction = "left"
+
+<SettingsWindow>:
+	name: "settings"
+
+	GridLayout:
+		cols: 3
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Label:
+			text: "You are in the Settings Page"
+			font_size: 40
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Button:
+			text: "Go Back"
+			font_size: 40
+			on_release:
+				app.root.current = "home"
+				root.manager.transition.direction = "right"
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Label:
+			text: ""
+		Label:
+			text: ""
