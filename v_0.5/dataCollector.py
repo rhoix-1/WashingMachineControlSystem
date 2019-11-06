@@ -20,6 +20,7 @@ soakItem = ["No", "Yes"]
 Item = ["Shirt", "Pants", "Underware", "Socks", "MiscSmall", "MiscMedium", "MiscLarge"]
 LightToggle = ["Off", "On"]
 MotorToggle = ["Off", "On"]
+PumpToggle = ["Off", "On"]
 ValveToggle = ["Closed", "Open"]
 
 def SelectedPreset():
@@ -56,6 +57,12 @@ def Motors():
 	M2 = MotorToggle[random.randint(0,1)]
 	M3 = MotorToggle[random.randint(0,1)]
 	return "M1: " + M1 + ", M2: " + M2 + ", M3: " + M3
+
+def Pumps():
+	P1 = PumpToggle[random.randint(0,1)]
+	P2 = PumpToggle[random.randint(0,1)]
+	P3 = PumpToggle[random.randint(0,1)]
+	return "P1: " + P1 + ", P2: " + P2 + ", P3: " + P3
 
 def Valves():
 	V1 = ValveToggle[random.randint(0,1)]
@@ -103,16 +110,17 @@ def SendData():
 	# val passes data in %s, %s
 	
 	# --- LOGS ---
-	sql = "INSERT INTO logs (DateTime, AgitationWaterLevel, AgitationWaterSalvaged, Lights, Valves, Motors, HumiditySensors, TemperatureSensors, PressureSensors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+	sql = "INSERT INTO logs (DateTime, AgitationWaterLevel, AgitationWaterSalvaged, Lights, Valves, Motors, Pumps, HumiditySensors, TemperatureSensors, PressureSensors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 	logAWaterLevel = AgitationWaterLevel()
 	logAWaterSalvaged = AgitationWaterSalvaged()
 	logLights = Lights()
 	logValves = Valves()
 	logMotors = Motors()
+	logPumps = Pumps()
 	logHSensors = HumiditySensors()
 	logTSensors = TemperatureSensors()
 	logPSensors = PressureSensors()
-	val = (Now(), logAWaterLevel, logAWaterSalvaged, logLights, logValves, logMotors, logHSensors, logTSensors, logPSensors)
+	val = (Now(), logAWaterLevel, logAWaterSalvaged, logLights, logValves, logMotors, logPumps, logHSensors, logTSensors, logPSensors)
 	print(sql, val)
 	mycursor.execute(sql, val)
 
