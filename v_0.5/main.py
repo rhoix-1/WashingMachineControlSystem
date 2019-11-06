@@ -10,7 +10,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 
 # Sends Data
-# dataCollector.SendData()
+dataCollector.SendData()
 
 
 # This variable keeps track when you go through your choices
