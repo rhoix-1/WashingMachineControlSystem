@@ -1,0 +1,7 @@
+GPIO Picture:
+https://gpiozero.readthedocs.io/en/stable/_images/pin_layout.svg
+
+https://gpiozero.readthedocs.io/en/stable/
+https://gpiozero.readthedocs.io/en/stable/recipes.html
+https://www.raspberrypi.org/documentation/usage/gpio/python/README.md
+https://buildmedia.readthedocs.org/media/pdf/gpiozero/docs-maybe/gpiozero.pdf
