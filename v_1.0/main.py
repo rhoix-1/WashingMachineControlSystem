@@ -14,6 +14,16 @@ LightToggle = ["Off", "On"]
 MotorToggle = ["Off", "On"]
 PumpToggle = ["Off", "On"]
 ValveToggle = ["Closed", "Open"]
+
+agitation_slow = [30, 35, 40, 45]
+agitation_fast = []
+
+cycle_duration_slow = []
+cycle_duration_fast = []
+
+water_amount = 1
+
+soak_duration = 1
 # ------------------------------------------------------------------------------
 
 # Text/Button Design
@@ -73,66 +83,100 @@ class HomeWindow(tk.Frame):
             now = datetime.now()
             date_and_time_text.config(text=now.strftime("%B %d, %Y || %H:%M:%S"))
             date_and_time_text.after(1000, date_and_time)
+        
+        def presets_change(total_selection):
+            def selection_change(size, ag_speed, cy_duration, if_soak):
+                size_button.config(text=size)
+                agitation_speed_button.config(text=ag_speed)
+                cycle_speed_button.config(text=cy_duration)
+                soak_button.config(text=if_soak)
+
+            if total_selection[preset_tracker] == "Shirt":
+                print("Shirt Preset Selected")
+                selection_change("Medium", "Fast", "Fast", "No")
+            elif total_selection[preset_tracker] == "Pants":
+                print("Pants Preset Selected")
+                selection_change("Medium", "Slow", "Slow", "No")
+            elif total_selection[preset_tracker] == "Sock":
+                print("Sock Preset Selected")
+                selection_change("Small", "Fast", "Fast", "Yes")
+            elif total_selection[preset_tracker] == "Underwear":
+                print("Underwear Preset Selected")
+                selection_change("Small", "Fast", "Fast", "Yes")
+            elif total_selection[preset_tracker] == "Towel":
+                print("Towel Preset Selected")
+                selection_change("Medium", "Fast", "Fast", "Yes")
+            elif total_selection[preset_tracker] == "Custom":
+                print("Custom")
 
         def user_item_button_press(current_button, total_selection):
             global preset_tracker
             if preset_tracker < len(total_selection):
                 current_button.config(text=str(total_selection[preset_tracker]))
+                presets_change(total_selection)
                 preset_tracker +=1
             else:
                 preset_tracker = 0
                 current_button.config(text=str(total_selection[preset_tracker]))
+                presets_change(total_selection)
                 preset_tracker += 1
 
-        def artificial_progress():
+        def start_pressed():
             global intake_nump
             global agitation_nump
             global draining_nump
             global uv_light_nump
             global dispense_nump
+            start_button.config(state="disabled")
+            # Artificial Process
             if intake_nump < 100:
                 intake_nump += 10
                 intake_phase_progress.config(value=intake_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
                 date_and_time()
-                artificial_progress()
+                start_pressed()
             elif agitation_nump < 100:
                 agitation_nump += 10
                 agitation_phase_progress.config(value=agitation_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
                 date_and_time()
-                artificial_progress()
+                start_pressed()
             elif draining_nump < 100:
                 draining_nump += 10
                 draining_phase_progress.config(value=draining_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
                 date_and_time()
-                artificial_progress()
+                start_pressed()
             elif uv_light_nump < 100:
                 uv_light_nump += 10
                 uv_light_phase_progress.config(value=uv_light_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
                 date_and_time()
-                artificial_progress()
+                start_pressed()
             elif dispense_nump < 100:
                 dispense_nump += 10
                 dispense_phase_progress.config(value=dispense_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
                 date_and_time()
-                artificial_progress()
+                start_pressed()
             else:
+                start_button.config(state="normal")
                 print("ALL DONE")
+
+        def pause_pressed():
+            reverse_button.config(state="normal")
+
 
         # Creating the Label Widgets for the text and buttons
         # Time and Date
         date_and_time_text = tk.Label(self, text="Error: Date/Time Not Loaded", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         # Left Side
-        item_text = tk.Label(self, text="Shirt", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        item_text = tk.Label(self, text="Item", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         item_button = tk.Button(self, text="Towel", font=BUTTON_FONT, command=lambda: user_item_button_press(item_button, itemOfClothing))
         
         size_text = tk.Label(self, text="Size", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
@@ -162,9 +206,9 @@ class HomeWindow(tk.Frame):
         dispense_phase_text = tk.Label(self, text="Dispense", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         dispense_phase_progress = ttk.Progressbar(self)
         # Bottom Menu
-        start_button = tk.Button(self, text="Start", font=TEXT_FONT, command=artificial_progress)
-        pause_button = tk.Button(self, text="Pause", font=TEXT_FONT)
-        reverse_button = tk.Button(self, text="Reverse", font=TEXT_FONT)
+        start_button = tk.Button(self, text="Start", font=TEXT_FONT, command=start_pressed)
+        pause_button = tk.Button(self, text="Pause", font=TEXT_FONT, command=pause_pressed)
+        reverse_button = tk.Button(self, text="Reverse", font=TEXT_FONT, state="disabled")
         settings_button = tk.Button(self, text="Settings", font=TEXT_FONT, command=lambda: controller.show_frame(SettingsWindow))
         shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
 
@@ -205,7 +249,7 @@ class HomeWindow(tk.Frame):
         start_button.grid(row=11, column=0, pady=(35, 0), sticky="we")
         pause_button.grid(row=11, column=1, pady=(35, 0), sticky="we")
         reverse_button.grid(row=11, column=2, pady=(35, 0), sticky="we")
-        settings_button.grid(row=11, column=4, pady=(35, 0), sticky="e")
+        settings_button.grid(row=11, column=3, pady=(35, 0), sticky="e")
         shutdown_button.grid(row=11, column=5, pady=(35, 0), sticky="e")
         # Calls the function that keeps the clock going in the home window
         date_and_time()
@@ -223,61 +267,86 @@ class SettingsWindow(tk.Frame):
 
         # Creating the Label Widgets for the text and button
         # Settings Window/Frame
+
+        # Time and Date -------
         date_and_time_text = tk.Label(self, text="Error: Date/Time Not Loaded", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         
+        # Agitation Section ---
+        agitation_section = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+
+        slow_agitation_speed_text = tk.Label(self, text="Slow Speed", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        slow_agitation_speed_button = tk.Button(self, text="--RPM", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        fast_agitation_speed_text = tk.Label(self, text="Fast Speed", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        fast_agitation_speed_button = tk.Button(self, text="--RPM", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+
+        slow_agitation_duration_text = tk.Label(self, text="Slow Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        slow_agitation_duration_button = tk.Button(self, text="--MIN", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        fast_agitation_duration_text = tk.Label(self, text="Fast Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        fast_agitation_duration_button = tk.Button(self, text="--MIN", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        # Cycle Section -------
+        cycle_section = tk.Label(self, text="Cycle Duration", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        slow_cycle_speed_text = tk.Label(self, text="Slow Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        slow_cycle_speed_button = tk.Button(self, text="--RPM", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        fast_cycle_speed_text = tk.Label(self, text="Fast Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        fast_cycle_speed_button = tk.Button(self, text="--RPM", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+    
+        slow_cycle_duration_text = tk.Label(self, text="Slow Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        slow_cycle_duration_button = tk.Button(self, text="--MIN", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        fast_cycle_duration_text = tk.Label(self, text="Fast Duration", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        fast_cycle_duration_button = tk.Button(self, text="--MIN", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
+        # Water Section -------
         water_amount_text = tk.Label(self, text="Water Amount", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         water_amount_button = tk.Button(self, text="--", font=BUTTON_FONT, command=lambda: print("PRESSED"))
-        
-        agitation_speed_section = tk.Label(self, text="Agitation Speed:", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        slow_agitation_text = tk.Label(self, text="Slow", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        slow_agitation_button = tk.Button(self, text="--", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
-        fast_agitation_text = tk.Label(self, text="Fast", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        fast_agitation_button = tk.Button(self, text="--", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
-        #
-        cycle_duration_section = tk.Label(self, text="Cycle Duration:", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        slow_cycle_duration_text = tk.Label(self, text="Slow:", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        slow_cycle_duration_button = tk.Button(self, text="--", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
-        fast_cycle_duration_text = tk.Label(self, text="Fast", font=SMALLER_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        fast_cycle_duration_button = tk.Button(self, text="--", font=SMALLER_BUTTON_FONT, command=lambda: print("PRESSED"))
-
+        # Soak Duration -------
         soak_duration_text = tk.Label(self, text="Soak Duration", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        soak_duration_button = tk.Button(self, text="--", font=BUTTON_FONT, command=lambda: print("PRESSED"))
-
-
-
+        soak_duration_button = tk.Button(self, text="--RPM", font=BUTTON_FONT, command=lambda: print("PRESSED"))
+        # Bottom Nav. Buttons -
         home_button = tk.Button(self, text="Home", font=TEXT_FONT, command=lambda: controller.show_frame(HomeWindow))
         shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
 
+
         # Putting it in the Frame using a Grid
-        # Top Time and Date
-        date_and_time_text.grid(row=0, column=1)
 
-
-        agitation_speed_section.grid(row=3, column=0, rowspan=2)
-        slow_agitation_text.grid(row=3, column=1, pady=(15, 0))
-        slow_agitation_button.grid(row=4, column=1)
-
-        fast_agitation_text.grid(row=3, column=2, pady=(15, 0))
-        fast_agitation_button.grid(row=4, column=2)
-
-        cycle_duration_section.grid(row=5, column=0, rowspan=2)
-        slow_cycle_duration_text.grid(row=5, column=1, pady=(15, 0))
-        slow_cycle_duration_button.grid(row=6, column=1)
-
-        fast_cycle_duration_text.grid(row=5, column=2, pady=(30, 0))
-        fast_cycle_duration_button.grid(row=6, column=2)
-
-        water_amount_text.grid(row=7, column=0)
-        water_amount_button.grid(row=8, column=0)
-
-        soak_duration_text.grid(row=9, column=0, pady=(30, 0))
-        soak_duration_button.grid(row=10, column=0, pady=(0, 35))
+        # Time and Date -------
+        date_and_time_text.grid(row=0, column=1, columnspan=3, padx=(110, 40))
+        
+        # Agitation Section ---
+        agitation_section.grid(row=1, column=0, columnspan=2, pady=(10, 0))
     
-        home_button.grid(row=11, column=1)
-        shutdown_button.grid(row=11, column=3)
+        slow_agitation_speed_text.grid(row=2, column=0)
+        slow_agitation_speed_button.grid(row=3, column=0)
+        fast_agitation_speed_text.grid(row=2, column=1)
+        fast_agitation_speed_button.grid(row=3, column=1)
+
+        slow_agitation_duration_text.grid(row=4, column=0)
+        slow_agitation_duration_button.grid(row=5, column=0)
+        fast_agitation_duration_text.grid(row=4, column=1)
+        fast_agitation_duration_button.grid(row=5, column=1)
+        # Cycle Section -------
+        cycle_section.grid(row=6, column=0, columnspan=2, pady=(23, 0))
+
+        slow_cycle_speed_text.grid(row=7, column=0)
+        slow_cycle_speed_button.grid(row=8, column=0)
+        fast_cycle_speed_text.grid(row=7, column=1)
+        fast_cycle_speed_button.grid(row=8, column=1)
+
+        slow_cycle_duration_text.grid(row=9, column=0)
+        slow_cycle_duration_button.grid(row=10, column=0)
+        fast_cycle_duration_text.grid(row=9, column=1)
+        fast_cycle_duration_button.grid(row=10, column=1)
+        # Water Section -------
+        water_amount_text.grid(row=2, column=2, columnspan=2)
+        water_amount_button.grid(row=3, column=2, columnspan=2)   
+        # Soak Section --------
+        soak_duration_text.grid(row=7, column=2, columnspan=2)
+        soak_duration_button.grid(row=8, column=2, columnspan=2)     
+        # Bottom Nav. Buttons -
+        home_button.grid(row=11, column=2, padx=(10, 0), sticky="e")
+        shutdown_button.grid(row=11, column=4, sticky="e")
 
         # Calls the function that keeps the clock going in the settings window
         date_and_time()
+        
 
 # Starts the GUI
 Washing_Machine_GUI().mainloop()
