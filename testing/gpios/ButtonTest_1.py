@@ -1,4 +1,4 @@
-from gpiozero import Button
+from gpiozero import Button, LED
 from time import sleep
 
 n = 0
@@ -13,9 +13,12 @@ btn7 = Button(16)
 btn8 = Button(20)
 btn9 = Button(21)
 
+led0 = LED(18)
+
 while True:
 	if btn0.is_pressed:
 		n = 0
+		led0.off()
 		print(n)
 	elif btn1.is_pressed:
 		n = n + 1
@@ -43,6 +46,7 @@ while True:
 		print(n)
 	elif btn9.is_pressed:
 		n = n + 9
+		led0.on()
 		print(n)
 	#else:
 	
