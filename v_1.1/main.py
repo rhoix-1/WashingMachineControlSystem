@@ -47,6 +47,9 @@ draining_nump = 0
 uv_light_nump = 0
 dispense_nump = 0
 
+progress_thread_control = True
+
+pause_resume_control = "Pause+"
 
 # Settings Page Values
 agitation_slow_speed_range = ["100", "150", "200", "250", "300", "350", "400"]
@@ -95,7 +98,21 @@ class HomeWindow(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.config(background="black")
-        
+
+        # date_and_time
+        # Updates to the current time and date every 1 second
+        def date_and_time():
+            while True:
+                now = datetime.now()
+                date_and_time_text.config(text=now.strftime("%B %d, %Y || %H:%M:%S"))
+                time.sleep(1)
+
+
+
+
+
+
+
         def presets_change(total_selection):
             def selection_change(size, ag_speed, cy_duration, if_soak):
                 size_button.config(text=size)
@@ -133,151 +150,249 @@ class HomeWindow(tk.Frame):
                 presets_change(total_selection)
                 preset_tracker += 1
 
-        def start_pressed():
+        def start_progressbar():
+            global intake_nump
+            global agitation_nump
+            global draining_nump
+            global uv_light_nump
+            global dispense_nump
+            print(progress_thread_control)
+            start_button.config(state="disabled")
+            # Artificial Process
+            if progress_thread_control == False:
+                return
+            if progress_thread_control == True:
+                if intake_nump < 100:
+                    intake_nump += 10
+                    intake_phase_progress.config(value=intake_nump)
+                    self.update_idletasks()
+                    time.sleep(0.5)
+                    start_progressbar()
+                elif agitation_nump < 100:
+                    agitation_nump += 10
+                    agitation_phase_progress.config(value=agitation_nump)
+                    self.update_idletasks()
+                    time.sleep(0.5)
+                    start_progressbar()
+                elif draining_nump < 100:
+                    draining_nump += 10
+                    draining_phase_progress.config(value=draining_nump)
+                    self.update_idletasks()
+                    time.sleep(0.5)
+                    start_progressbar()
+                elif uv_light_nump < 100:
+                    uv_light_nump += 10
+                    uv_light_phase_progress.config(value=uv_light_nump)
+                    self.update_idletasks()
+                    time.sleep(0.5)
+                    start_progressbar()
+                elif dispense_nump < 100:
+                    dispense_nump += 10
+                    dispense_phase_progress.config(value=dispense_nump)
+                    self.update_idletasks()
+                    time.sleep(0.5)
+                    start_progressbar()
+                else:
+                    start_button.config(state="normal")
+
+        start_thread = threading.Thread(target=start_progressbar)
+
+        def start_press():
+            print(start_thread.is_alive())
+            start_thread.start()
+            pause_button.config(state="normal")
+
+        def pause_pressed():
+            global progress_thread_control
+            global pause_resume_control
+            if pause_resume_control == "Pause+":
+                print("Program Paused +")
+                reverse_button.config(state="normal")
+                progress_thread_control = False
+                pause_resume_control = "Resume+"
+                pause_button.config(text="Resume")
+            elif pause_resume_control == "Resume+":
+                print("Program Resumed +")
+                progress_thread_control = True
+                pause_resume_control = "Pause+"
+                pause_button.config(text="Pause")
+                start_progressbar()
+            elif pause_resume_control == "Pause-":
+                print("Program Paused +")
+                reverse_button.config(state="normal")
+                progress_thread_control = False
+                pause_resume_control = "Resume-"
+                pause_button.config(text="Resume")
+            elif pause_resume_control == "Resume-":
+                print("Program Resumed +")
+                progress_thread_control = True
+                pause_resume_control = "Pause-"
+                pause_button.config(text="Pause-")
+                start_progressbar()
+
+        def reverse_progressbar():
             global intake_nump
             global agitation_nump
             global draining_nump
             global uv_light_nump
             global dispense_nump
             start_button.config(state="disabled")
+            print("ARE YOU GONNA WORK?")
+            pause_button.config(text="Pause")
             # Artificial Process
-            if intake_nump < 100:
-                intake_nump += 10
-                intake_phase_progress.config(value=intake_nump)
-                self.update_idletasks()
-                time.sleep(0.5)
-                # date_and_time()
-                start_pressed()
-            elif agitation_nump < 100:
-                agitation_nump += 10
-                agitation_phase_progress.config(value=agitation_nump)
-                self.update_idletasks()
-                time.sleep(0.5)
-                # date_and_time()
-                start_pressed()
-            elif draining_nump < 100:
-                draining_nump += 10
-                draining_phase_progress.config(value=draining_nump)
-                self.update_idletasks()
-                time.sleep(0.5)
-                # date_and_time()
-                start_pressed()
-            elif uv_light_nump < 100:
-                uv_light_nump += 10
-                uv_light_phase_progress.config(value=uv_light_nump)
-                self.update_idletasks()
-                time.sleep(0.5)
-                # date_and_time()
-                start_pressed()
-            elif dispense_nump < 100:
-                dispense_nump += 10
+            if dispense_nump > 0:
+                dispense_nump -= 10
                 dispense_phase_progress.config(value=dispense_nump)
                 self.update_idletasks()
                 time.sleep(0.5)
-                # date_and_time()
-                start_pressed()
+                reverse_progressbar()
+            elif uv_light_nump > 0:
+                uv_light_nump -= 10
+                uv_light_phase_progress.config(value=uv_light_nump)
+                self.update_idletasks()
+                time.sleep(0.5)
+                reverse_progressbar()
+            elif draining_nump > 0:
+                draining_nump -= 10
+                draining_phase_progress.config(value=draining_nump)
+                self.update_idletasks()
+                time.sleep(0.5)
+                reverse_progressbar()
+            elif agitation_nump > 0:
+                agitation_nump -= 10
+                agitation_phase_progress.config(value=agitation_nump)
+                self.update_idletasks()
+                time.sleep(0.5)
+                reverse_progressbar()
+            elif intake_nump > 0:
+                intake_nump -= 10
+                intake_phase_progress.config(value=intake_nump)
+                self.update_idletasks()
+                time.sleep(0.5)
+                reverse_progressbar()
             else:
-                start_button.config(state="normal")
+                reverse_button.config(state="disabled")
                 print("ALL DONE")
 
-        def pause_pressed():
-            reverse_button.config(state="normal")
+        reverse_thread = threading.Thread(target=reverse_progressbar)
 
 
-        # Creating the Label Widgets for the text and buttons
+
+
+
+
+
+
+
+
+
+
+
+        # Creating the Label Widgets for the Text and Buttons
         # Time and Date
         date_and_time_text = tk.Label(self, text="Error: Date/Time Not Loaded", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        # Left Side
-        item_text = tk.Label(self, text="Item", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        item_button = tk.Button(self, text="Towel", font=BUTTON_FONT, command=lambda: user_item_button_press(item_button, itemOfClothing))
-        
-        size_text = tk.Label(self, text="Size", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        size_button = tk.Button(self, text="Large", font=BUTTON_FONT, command=lambda: user_item_button_press(size_button, waterAmount))
-        
-        agitation_speed_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        agitation_speed_button = tk.Button(self, text="Fast", font=BUTTON_FONT, command=lambda: user_item_button_press(agitation_speed_button, aSpeed))
-        
-        cycle_speed_text = tk.Label(self, text="Cycle", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        cycle_speed_button = tk.Button(self, text="Slow", font=BUTTON_FONT, command=lambda: user_item_button_press(cycle_speed_button, cSpeed))
-        
-        soak_text = tk.Label(self, text="Soak", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        soak_button = tk.Button(self, text="Yes", font=BUTTON_FONT, command=lambda: user_item_button_press(soak_button, soakItem))
-        # Right Side
-        intake_phase_text = tk.Label(self, text="Intake", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        intake_phase_progress = ttk.Progressbar(self)
-        
-        agitation_phase_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        agitation_phase_progress = ttk.Progressbar(self)
-        
-        draining_phase_text = tk.Label(self, text="Draining", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        draining_phase_progress = ttk.Progressbar(self)
-        
-        uv_light_phase_text = tk.Label(self, text="UV Light", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        uv_light_phase_progress = ttk.Progressbar(self)
-        
-        dispense_phase_text = tk.Label(self, text="Dispense", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        dispense_phase_progress = ttk.Progressbar(self)
-        # Bottom Menu
-        start_button = tk.Button(self, text="Start", font=TEXT_FONT, command=start_pressed)
-        pause_button = tk.Button(self, text="Pause", font=TEXT_FONT, command=pause_pressed)
-        reverse_button = tk.Button(self, text="Reverse", font=TEXT_FONT, state="disabled")
-        settings_button = tk.Button(self, text="Settings", font=TEXT_FONT, command=lambda: controller.show_frame(SettingsWindow))
-        shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
-
-        # Putting it in the Frame using a Grid
-        # Top Time and Date
         date_and_time_text.grid(row=0, column=2, columnspan=3, padx=(56, 50))
+
         # Left Side
+        # Item Text
+        item_text = tk.Label(self, text="Item", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         item_text.grid(row=0, column=0, columnspan=2)
+        # Item Button
+        item_button = tk.Button(self, text="Towel", font=BUTTON_FONT, command=lambda: user_item_button_press(item_button, itemOfClothing))
         item_button.grid(row=1, column=0, columnspan=2)
-        
+
+        # Size Text
+        size_text = tk.Label(self, text="Size", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         size_text.grid(row=2, column=0, columnspan=2)
+        # Size Button
+        size_button = tk.Button(self, text="Large", font=BUTTON_FONT, command=lambda: user_item_button_press(size_button, waterAmount))
         size_button.grid(row=3, column=0, columnspan=2)
-        
+
+        # Agitation Text
+        agitation_speed_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         agitation_speed_text.grid(row=4, column=0, columnspan=2)
+        # Agiation Button
+        agitation_speed_button = tk.Button(self, text="Fast", font=BUTTON_FONT, command=lambda: user_item_button_press(agitation_speed_button, aSpeed))
         agitation_speed_button.grid(row=5, column=0, columnspan=2)
-        
+
+        # Cycle Text
+        cycle_speed_text = tk.Label(self, text="Cycle", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         cycle_speed_text.grid(row=6, column=0, columnspan=2)
+        # Cycle Button
+        cycle_speed_button = tk.Button(self, text="Slow", font=BUTTON_FONT, command=lambda: user_item_button_press(cycle_speed_button, cSpeed))
         cycle_speed_button.grid(row=7, column=0, columnspan=2)
         
+        # Soak Text
+        soak_text = tk.Label(self, text="Soak", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         soak_text.grid(row=8, column=0, columnspan=2)
+        # Soak Button
+        soak_button = tk.Button(self, text="Yes", font=BUTTON_FONT, command=lambda: user_item_button_press(soak_button, soakItem))
         soak_button.grid(row=9, column=0, columnspan=2)
+
+
         # Right Side
+        # Intake Phase Text
+        intake_phase_text = tk.Label(self, text="Intake", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         intake_phase_text.grid(row=0, column=5)
+        # Intake Phase Progress Bar
+        intake_phase_progress = ttk.Progressbar(self)
         intake_phase_progress.grid(row=1, column=5)
         
+        # Agitation Phase Text
+        agitation_phase_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         agitation_phase_text.grid(row=2, column=5)
+        # Agitation Phase Progress Bar
+        agitation_phase_progress = ttk.Progressbar(self)
         agitation_phase_progress.grid(row=3, column=5)
-        
+
+        # Draining Phase Text
+        draining_phase_text = tk.Label(self, text="Draining", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         draining_phase_text.grid(row=4, column=5)
+        # Draining Phase Progress Bar
+        draining_phase_progress = ttk.Progressbar(self)
         draining_phase_progress.grid(row=5, column=5)
         
+        # UV Light Phase Text
+        uv_light_phase_text = tk.Label(self, text="UV Light", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         uv_light_phase_text.grid(row=6, column=5)
+        # UV Light Progress Bar
+        uv_light_phase_progress = ttk.Progressbar(self)
         uv_light_phase_progress.grid(row=7, column=5)
         
+        # Dispense Phase Text
+        dispense_phase_text = tk.Label(self, text="Dispense", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         dispense_phase_text.grid(row=8, column=5)
+        # Dispense Progress Bar
+        dispense_phase_progress = ttk.Progressbar(self)
         dispense_phase_progress.grid(row=9, column=5)
-        # Button Menu
+
+
+        # Bottom Menu
+        # Start Button
+        start_button = tk.Button(self, text="Start", font=TEXT_FONT, command=start_press)
         start_button.grid(row=11, column=0, pady=(35, 0), sticky="we")
+
+        # Pause Button
+        pause_button = tk.Button(self, text="Pause", font=TEXT_FONT, state="disabled", command=pause_pressed)
         pause_button.grid(row=11, column=1, pady=(35, 0), sticky="we")
+
+        # Reverse Button
+        reverse_button = tk.Button(self, text="Reverse", font=TEXT_FONT, state="disabled", command=reverse_thread.start)
         reverse_button.grid(row=11, column=2, pady=(35, 0), sticky="we")
+
+        # Settings Button
+        settings_button = tk.Button(self, text="Settings", font=TEXT_FONT, command=lambda: controller.show_frame(SettingsWindow))
         settings_button.grid(row=11, column=3, pady=(35, 0), sticky="e")
+
+        # Shutdown Button
+        shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
         shutdown_button.grid(row=11, column=5, pady=(35, 0), sticky="e")
+    
 
-        def date_and_time():
-            print("One")
-            while True:
-                print("Two")
-                now = datetime.now()
-                date_and_time_text.config(text=now.strftime("%B %d, %Y || %H:%M:%S"))
-                time.sleep(100)
-                print("Three")
 
-        print("Four")
-        # Calls the function that keeps the clock going in the home window
+        # Creating a thread to allow the clock to run without being interrupted
         dt_thread = threading.Thread(target=date_and_time)
         dt_thread.start()
-        print("Five")
 
 
 class SettingsWindow(tk.Frame):
