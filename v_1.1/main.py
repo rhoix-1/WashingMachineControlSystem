@@ -37,7 +37,7 @@ SMALLER_FONT = ("Roboto", 15)
 SMALLER_BUTTON_FONT = ("Roboto", 12)
 
 # Keeps track of the choices there are which allows you to select through them when clicking on the button
-preset_tracker = 0
+
 settings_tracker = 0
 
 # Keeps a number to track the progress of each stage (nump = number progress)
@@ -68,6 +68,53 @@ water_amount_range = ["10", "15", "20", "25", "30", "35", "40", "45", "50", "55"
 
 soak_duration_range = ["25", "30", "35", "40", "45", "50", "55", "60"]
 
+
+
+
+
+
+
+# Preset_Builder
+#   It builds an object containing the preset and its information
+class Preset_Builder:
+    def __init__(self, item, size, agitation, cycle, soak):
+        self.item = item
+        self.size = size
+        self.agitation = agitation
+        self.cycle = cycle
+        self.soak = soak
+
+# Where all the preset objects are
+presets_list = []
+
+press_tracker = 0
+
+
+
+
+# Creates an object using the Preset_Builder class
+# It then appends it to the presets_list to store it all in one place
+shirts_preset = Preset_Builder("Shirt", "Medium", "Fast", "Fast", "No")
+presets_list.append(shirts_preset)
+pants_preset = Preset_Builder("Pants", "Medium", "Slow", "Slow", "No")
+presets_list.append(pants_preset)
+socks_preset = Preset_Builder("Socks", "Small", "Fast", "Fast", "Yes")
+presets_list.append(socks_preset)
+underwear_preset = Preset_Builder("Underwear", "Small", "Fast", "Fast", "Yes")
+presets_list.append(underwear_preset)
+towel_preset = Preset_Builder("Towel", "Medium", "Fast", "Fast", "Yes")
+presets_list.append(towel_preset)
+custom_preset = Preset_Builder("Custom", "Large", "Slow", "Fast", "No")
+presets_list.append(towel_preset)
+
+# This is how you gonna get it (TEST)
+print(presets_list[0].item)
+
+
+
+
+# Washing_Machine_GUI
+#   Takes care of changing pages (home and settings pages)
 class Washing_Machine_GUI(tk.Tk):
     def __init__(self, *args, **kwargs):
         # Initializes Tkinter too basically
@@ -82,37 +129,53 @@ class Washing_Machine_GUI(tk.Tk):
 
         self.frames = {}
 
-        for F in (HomeWindow, SettingsWindow):
+        for F in (Home_Window, SettingsWindow):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame(HomeWindow)
+        self.show_frame(Home_Window)
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
 
-
-class HomeWindow(tk.Frame):
+# Home_Window
+#   Everything in the Home Window/Page is within this class
+class Home_Window(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.config(background="black")
 
         # date_and_time
-        # Updates to the current time and date every 1 second
+        #   Updates to the current time and date every 1 second
+        #   A thread is created for it at the bottom of this class
         def date_and_time():
             while True:
                 now = datetime.now()
                 date_and_time_text.config(text=now.strftime("%B %d, %Y || %H:%M:%S"))
                 time.sleep(1)
+        
+        # user_press
+        #   Makes it for when you click on the button with the choices for washing it shows you your options
+        def user_press(current_button, total_selection):
+            global press_tracker
+            if current_button == item_button:
+                print("This is the item button thing")
+            elif press_tracker < len(total_selection):
+                current_button.config(text=str(total_selection[press_tracker]))
+                press_tracker(total_selection)
+                press_tracker +=1
+            else:
+                press_tracker = 0
+                current_button.config(text=str(total_selection[press_tracker]))
+                presets_change(total_selection)
+                press_tracker += 1
 
 
 
-
-
-
-
+        # presets_change
+        #   It gives each item its own selection (size, agitation, cycle, and soak) when you change it
         def presets_change(total_selection):
             def selection_change(size, ag_speed, cy_duration, if_soak):
                 size_button.config(text=size)
@@ -138,17 +201,7 @@ class HomeWindow(tk.Frame):
             elif total_selection[preset_tracker] == "Custom":
                 print("Custom")
 
-        def user_item_button_press(current_button, total_selection):
-            global preset_tracker
-            if preset_tracker < len(total_selection):
-                current_button.config(text=str(total_selection[preset_tracker]))
-                presets_change(total_selection)
-                preset_tracker +=1
-            else:
-                preset_tracker = 0
-                current_button.config(text=str(total_selection[preset_tracker]))
-                presets_change(total_selection)
-                preset_tracker += 1
+
 
         def start_progressbar():
             global intake_nump
@@ -278,16 +331,6 @@ class HomeWindow(tk.Frame):
 
 
 
-
-
-
-
-
-
-
-
-
-
         # Creating the Label Widgets for the Text and Buttons
         # Time and Date
         date_and_time_text = tk.Label(self, text="Error: Date/Time Not Loaded", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
@@ -298,35 +341,35 @@ class HomeWindow(tk.Frame):
         item_text = tk.Label(self, text="Item", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         item_text.grid(row=0, column=0, columnspan=2)
         # Item Button
-        item_button = tk.Button(self, text="Towel", font=BUTTON_FONT, command=lambda: user_item_button_press(item_button, itemOfClothing))
+        item_button = tk.Button(self, text="Towel", font=BUTTON_FONT, command=lambda: user_press(item_button, itemOfClothing))
         item_button.grid(row=1, column=0, columnspan=2)
 
         # Size Text
         size_text = tk.Label(self, text="Size", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         size_text.grid(row=2, column=0, columnspan=2)
         # Size Button
-        size_button = tk.Button(self, text="Large", font=BUTTON_FONT, command=lambda: user_item_button_press(size_button, waterAmount))
+        size_button = tk.Button(self, text="Large", font=BUTTON_FONT, command=lambda: user_press(size_button, waterAmount))
         size_button.grid(row=3, column=0, columnspan=2)
 
         # Agitation Text
-        agitation_speed_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        agitation_speed_text.grid(row=4, column=0, columnspan=2)
+        agitation_text = tk.Label(self, text="Agitation", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        agitation_text.grid(row=4, column=0, columnspan=2)
         # Agiation Button
-        agitation_speed_button = tk.Button(self, text="Fast", font=BUTTON_FONT, command=lambda: user_item_button_press(agitation_speed_button, aSpeed))
-        agitation_speed_button.grid(row=5, column=0, columnspan=2)
+        agitation_button = tk.Button(self, text="Fast", font=BUTTON_FONT, command=lambda: user_press(agitation_button, aSpeed))
+        agitation_button.grid(row=5, column=0, columnspan=2)
 
         # Cycle Text
-        cycle_speed_text = tk.Label(self, text="Cycle", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
-        cycle_speed_text.grid(row=6, column=0, columnspan=2)
+        cycle_text = tk.Label(self, text="Cycle", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
+        cycle_text.grid(row=6, column=0, columnspan=2)
         # Cycle Button
-        cycle_speed_button = tk.Button(self, text="Slow", font=BUTTON_FONT, command=lambda: user_item_button_press(cycle_speed_button, cSpeed))
-        cycle_speed_button.grid(row=7, column=0, columnspan=2)
+        cycle_button = tk.Button(self, text="Slow", font=BUTTON_FONT, command=lambda: user_press(cycle_button, cSpeed))
+        cycle_button.grid(row=7, column=0, columnspan=2)
         
         # Soak Text
         soak_text = tk.Label(self, text="Soak", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         soak_text.grid(row=8, column=0, columnspan=2)
         # Soak Button
-        soak_button = tk.Button(self, text="Yes", font=BUTTON_FONT, command=lambda: user_item_button_press(soak_button, soakItem))
+        soak_button = tk.Button(self, text="Yes", font=BUTTON_FONT, command=lambda: user_press(soak_button, soakItem))
         soak_button.grid(row=9, column=0, columnspan=2)
 
 
@@ -388,11 +431,11 @@ class HomeWindow(tk.Frame):
         shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
         shutdown_button.grid(row=11, column=5, pady=(35, 0), sticky="e")
     
-
-
-        # Creating a thread to allow the clock to run without being interrupted
+        # Creating a thread to allow the date and time to run without being interrupted
         dt_thread = threading.Thread(target=date_and_time)
         dt_thread.start()
+
+
 
 
 class SettingsWindow(tk.Frame):
@@ -452,7 +495,7 @@ class SettingsWindow(tk.Frame):
         soak_duration_text = tk.Label(self, text="Soak Duration", font=TEXT_FONT, background=TEXT_BACKGROUND_COLOR, foreground=TEXT_COLOR)
         soak_duration_button = tk.Button(self, text="25 MIN", font=BUTTON_FONT, command=lambda: user_settings_button_press(soak_duration_button, soak_duration_range, "MIN"))
         # Bottom Nav. Buttons -
-        home_button = tk.Button(self, text="Home", font=TEXT_FONT, command=lambda: controller.show_frame(HomeWindow))
+        home_button = tk.Button(self, text="Home", font=TEXT_FONT, command=lambda: controller.show_frame(Home_Window))
         shutdown_button = tk.Button(self, text="Shutdown", font=TEXT_FONT, command=quit)
 
 
