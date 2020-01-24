@@ -3,4 +3,4 @@
 NASA HUNCH 2019-2020 Project
 
 By:
-Ethan Feldman & Josepher Shunaula
+Ethan R. Feldman & Josepher E. Shunaula
