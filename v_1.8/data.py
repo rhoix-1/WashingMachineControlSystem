@@ -54,8 +54,8 @@ motArray = ["Stopped", "Forward", "Reverse"]
 # Hardware -------------------------------------------------------------
 
 # GPIO
-led = LED(25)
-ldr0 = LightSensor(16)
+led = LED(14)
+ldr0 = LightSensor(15)
 
 btn1 = Button(18)
 btn2 = Button(23)
@@ -68,18 +68,18 @@ btn8 = Button(16)
 btn9 = Button(20)
 btn10 = Button(21)
 
-dis0 = DistanceSensor(echo=23, trigger=24)
-servo0 = AngularServo(18, initial_angle=0, min_angle=0, max_angle=90)
+# Set forward and backward motor drives
+IN1 = 17 # - Forwards
+IN2 = 27 # - Backwards 
+forwardDrive = PWMOutputDevice(IN1, True, 0, 1000)
+backwardDrive = PWMOutputDevice(IN2, True, 0, 1000)
+
+dis0 = DistanceSensor(echo=26, trigger=19)
+servo0 = AngularServo(5, initial_angle=0, min_angle=0, max_angle=90)
 
 # Set sensor type : Options are DHT11, DHT22, or AM2302
 dht0 = Adafruit_DHT.DHT22
 dht0gpio = 12
-
-# Set forward and backward motor drives
-IN1 = 21 # - Forwards
-IN2 = 20 # - Backwards
-forwardDrive = PWMOutputDevice(IN1, True, 0, 1000)
-backwardDrive = PWMOutputDevice(IN2, True, 0, 1000)
 
 
 # Functions ------------------------------------------------------------
