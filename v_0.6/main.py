@@ -89,8 +89,7 @@ def PressureSensors():
 # sendData
 #   SENDS DATA TO MYSQL DATABASE
 def sendData():
-	# Connects to Justin's MySQL server on his computer
-	# His IP-Addess: 24.2.213.138
+
 	mydb = mysql.connector.connect(
 	)
 
