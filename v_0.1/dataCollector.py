@@ -93,10 +93,6 @@ def SendData():
 	# Connects to justin's MySQL server on his computer
 	# His IP-Addess: 24.2.213.138
 	mydb = mysql.connector.connect(
-		host="mysql.kellyweb.space",
-		user="roboto",
-		passwd="@Plattist1",
-		database="hunch"
 	)
 
 	# This will execute commands
