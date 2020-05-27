@@ -90,8 +90,6 @@ def SendData():
 
 	#print("inside")
 
-	# Connects to justin's MySQL server on his computer
-	# His IP-Addess: 24.2.213.138
 	mydb = mysql.connector.connect(
 	)
 
